@@ -1,6 +1,6 @@
 # Lisensi pihak ketiga & atribusi
 
-Lisensi skill ini: **MIT** (teks lisensi lengkap ditambahkan saat rilis; keputusan tim 22 Nov 2026).
+Lisensi skill ini: tanpa lisensi — semua hak cipta dipertahankan oleh pembuatnya (keputusan 25 Nov 2026).
 Kebijakan: **tidak ada kode atau teks README yang disalin** dari repo di bawah. Instruksi ditulis ulang dengan kata sendiri dan dilipat ke tahap pipeline. Repo ber-GPL dipanggil hanya sebagai **program eksternal** oleh user. Lisensi diambil dari README/halaman repo yang dibaca 22 Nov 2026 atau dari `inventaris-skill-clipper.md` (diverifikasi 21 Nov 2026).
 
 | # | Alat | Lisensi | Cara skill memakainya | Catatan |
