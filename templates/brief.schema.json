@@ -1,0 +1,358 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "brief.json — spesifikasi terukur dari brief campaign (S0)",
+  "type": "object",
+  "required": [
+    "campaign",
+    "duration",
+    "tiktok"
+  ],
+  "properties": {
+    "campaign": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "nama campaign (judul/brand, bukan nama orang)"
+        },
+        "cpm_idr_per_1k": {
+          "type": "number"
+        },
+        "brief_ref": {
+          "type": "string",
+          "description": "tautan/berkas brief (tanpa kredensial)"
+        },
+        "kasus": {
+          "type": "string",
+          "enum": [
+            "K1",
+            "K2",
+            "K3",
+            "K4",
+            "K5",
+            "K6",
+            "K7"
+          ]
+        }
+      }
+    },
+    "duration": {
+      "type": "object",
+      "properties": {
+        "min_s": {
+          "type": "number"
+        },
+        "max_s": {
+          "type": "number"
+        }
+      }
+    },
+    "orientasi": {
+      "type": "string",
+      "enum": [
+        "portrait",
+        "landscape"
+      ],
+      "default": "portrait",
+      "description": "Orientasi kanvas final (F11): portrait = 1080x1920 (default; semua brief lama tanpa field ini dibaca portrait), landscape = 1920x1080. qc_all memeriksa kecocokan orientasi ini dengan `size` di project.json (beda = FAIL)."
+    },
+    "tiktok": {
+      "type": "object",
+      "properties": {
+        "hashtags_required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tag_accounts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "akun yang wajib ditag, format @akun"
+        }
+      }
+    },
+    "cta": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "where": {
+          "type": "string",
+          "enum": [
+            "caption",
+            "video",
+            "keduanya"
+          ]
+        }
+      }
+    },
+    "narrative": {
+      "type": "object",
+      "properties": {
+        "chosen": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "footage": {
+      "type": "object",
+      "properties": {
+        "allowed_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "must_use": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "prohibitions": {
+      "type": "object",
+      "properties": {
+        "ai_content": {
+          "type": "boolean",
+          "description": "true = konten AI (VO/musik/visual) dilarang"
+        },
+        "sara": {
+          "type": "boolean"
+        },
+        "botting": {
+          "type": "boolean"
+        },
+        "reupload": {
+          "type": "boolean"
+        },
+        "lainnya": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ai_waiver": {
+      "type": "object",
+      "description": "Izin pengecualian larangan AI. Sah HANYA bila granted=true, by='user', date (ISO) dan scope terisi.",
+      "properties": {
+        "granted": {
+          "type": "boolean"
+        },
+        "by": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "description": "waktu izin, ISO, mis. 2026-11-21T20:40"
+        },
+        "scope": {
+          "type": "string",
+          "description": "ruang lingkup izin, mis. 'tools AI bila dibutuhkan'"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "hook": {
+      "type": "object",
+      "properties": {
+        "max_fraction": {
+          "type": "number",
+          "default": 0.2
+        }
+      }
+    },
+    "submit": {
+      "type": "object",
+      "properties": {
+        "deadline_hours_after_post": {
+          "type": "number",
+          "default": 24
+        },
+        "min_days_live": {
+          "type": "number",
+          "default": 5
+        }
+      }
+    },
+    "k3": {
+      "type": "object",
+      "description": "OPSIONAL, hanya untuk K3 (video panjang 1 pembicara → klip highlight). Lihat references/K3-panjang.md. Kunci di sini bersifat catatan intake S0; tidak dibaca skrip (belum ada skrip yang memakainya).",
+      "properties": {
+        "clip_count": {
+          "type": "integer",
+          "description": "jumlah klip yang diminta; boleh dihasilkan lebih sedikit bila momen layak kurang (dilaporkan)"
+        },
+        "clip_len_s": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          }
+        },
+        "source_timestamps": {
+          "type": "array",
+          "description": "poin/timestamp yang diminta user (detik di sumber atau catatan 'cari sendiri')",
+          "items": {
+            "type": "string"
+          }
+        },
+        "overlays_allowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "true HANYA bila brief meminta/mengizinkan judul permanen/watermark/logo; default false (brief 'sensitive branding' melarang)"
+        },
+        "loudness_in_brief": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "bila brief menyebut angka loudness: catat di sini → konflik dengan lock −18 LUFS diputuskan user di G-BRIEF (bukan override otomatis); null/kosong = brief tidak menyebut"
+        },
+        "source_allowed_basis": {
+          "type": "string",
+          "description": "dasar izin pemakaian sumber (materi campaign / lisensi terbuka / milik sendiri)"
+        }
+      }
+    },
+    "k7": {
+      "type": "object",
+      "description": "OPSIONAL, hanya untuk K7 (footage brand/UGC). Lihat references/K7-footage-brand.md. Kunci di sini bersifat catatan intake S0; tidak dibaca skrip (belum ada skrip yang memakainya).",
+      "properties": {
+        "angle": {
+          "type": "object",
+          "properties": {
+            "chosen": {
+              "type": "string",
+              "description": "satu angle yang dipilih per klip, diputuskan di G-STORY (agen mengusulkan dari daftar brief, user menyetujui)"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "daftar angle dari brief PDF (mis. daftar angle pada brief)"
+            }
+          }
+        },
+        "kunci_pesan": {
+          "type": "string",
+          "description": "kunci pesan brief (frasa kunci dari brief, disalin persis)"
+        },
+        "elemen_wajib": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "elemen yang wajib terlihat (mis. logo terlihat, produk terlihat); salin dari brief"
+        },
+        "klaim_terlarang": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "salin verbatim dari brief; kosong bila brief tidak menyebut"
+        },
+        "sumber_footage": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "URL folder Drive / tautan materi dari halaman campaign; kosong bila tidak ada tautan resmi"
+        }
+      }
+    },
+    "deviasi_sumber": {
+      "type": "array",
+      "description": "F8.4 (F7-2): sumber yang DIPAKAI menyimpang dari sumber yang disebut brief — dicatat eksplisit sejak G-BRIEF, bukan catatan bebas. Satu entri per sumber yang menyimpang; kosong/tidak ada = semua sumber sesuai brief.",
+      "items": {
+        "type": "object",
+        "required": [
+          "sumber_brief",
+          "sumber_dipakai",
+          "alasan"
+        ],
+        "properties": {
+          "sumber_brief": {
+            "type": "string",
+            "description": "sumber menurut brief (mis. 'Trailer Utama 3726')"
+          },
+          "sumber_dipakai": {
+            "type": "string",
+            "description": "sumber yang benar-benar dipakai (mis. 'teaser resmi 29 dtk, kanal Falcon')"
+          },
+          "alasan": {
+            "type": "string",
+            "description": "kenapa menyimpang (mis. 'trailer utama bot-blocked dari VM, F7-1')"
+          },
+          "dampak": {
+            "type": "string",
+            "description": "dampak ke validitas klip (mis. 'valid sebagai tes, belum tentu valid sebagai submission')"
+          }
+        }
+      }
+    },
+    "manual_items": {
+      "type": "array",
+      "description": "Butir audit (checklist manual). Satu baris hasil per butir; `auto` memetakan ke cek otomatis agar hasil otomatis↔manual dibandingkan item per item.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "requirement"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "requirement": {
+            "type": "string"
+          },
+          "auto": {
+            "type": "string",
+            "enum": [
+              "durasi",
+              "format",
+              "loudness",
+              "digital_silence",
+              "frame_hitam",
+              "kartu_lint",
+              "teks_kartu",
+              "hashtag",
+              "tag",
+              "cta",
+              "larangan_ai",
+              "hook",
+              "sfx",
+              "vo_suara",
+              "t_dengar"
+            ],
+            "description": "id cek otomatis yang setara (pemetaan 1:1 untuk brief_audit); kosong = hanya manual"
+          }
+        }
+      }
+    }
+  }
+}

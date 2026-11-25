@@ -1,0 +1,11 @@
+{
+  "_catatan": "Bentuk cards.json untuk DIALOG (jalur manual = default K1/K7/K4). Disusun manusia/agen dari jeda ucapan yang DIDENGAR/DILIHAT (pause_anchor.py --list-pauses hanya memberi kandidat). Teks = dialog verbatim (bukan transkrip bebas whisper), 2-7 kata, dibelah per frasa. start = onset frasa; end = start berikut - 0,04 (celah 0,04); kartu terakhir grup = akhir ucapan (+ hold kecil bila perlu) dan tidak melewati start grup berikut. Semua waktu = detik pada timeline FINAL. Nilai di bawah = CONTOH placeholder. Wajib: kartu_lint (qc_all) + G-HUMAN (putar ulang dialog).",
+  "params": {"mode": "manual", "sumber_jeda": "didengar + --list-pauses (kandidat)"},
+  "cards": [
+    {"id": 1, "kind": "caption", "text": "Kenapa harus selalu aku", "start": 3.10, "end": 4.46, "group": 0, "timing": "manual"},
+    {"id": 2, "kind": "caption", "text": "yang mengalah", "start": 4.50, "end": 5.62, "group": 0, "timing": "manual"},
+    {"id": 3, "kind": "caption", "text": "Karena kamu bisa", "start": 6.80, "end": 8.00, "group": 1, "timing": "manual"},
+    {"id": 4, "kind": "caption", "text": "dan mereka tidak", "start": 8.04, "end": 9.30, "group": 1, "timing": "manual"}
+  ],
+  "warnings": []
+}

@@ -1,0 +1,54 @@
+{
+  "_catatan": "Masukan G-STORY untuk K3 (satu berkas per SUMBER). Semua nilai = CONTOH placeholder. Skor rubrik 0-2 per butir = penilaian agen yang dicek manusia (bukan hasil skrip). Momen yang diminta tetapi tidak ditemukan WAJIB dicatat (status 'tidak_ditemukan'). Tanpa nama orang/akun asli; pakai <PEMBICARA>.",
+  "sumber": {
+    "id": "src_01",
+    "berkas": "source.mp4",
+    "durasi_s": 3600.0,
+    "izin": "materi campaign / diizinkan brief (tulis dasar izin)",
+    "transkrip": "work/transcript.json (segmen kalimat, whisper.cpp -l id -nf)"
+  },
+  "rubrik": ["hook", "pernyataan_kuat", "kejutan", "emosi", "utuh", "layak_tayang"],
+  "momen": [
+    {
+      "id": "m1",
+      "status": "dipilih",
+      "diminta_user": true,
+      "src_in": 1234.5,
+      "src_out": 1271.0,
+      "skor": {"hook": 2, "pernyataan_kuat": 2, "kejutan": 1, "emosi": 1, "utuh": 2, "layak_tayang": 2},
+      "total": 10,
+      "alasan": "Dibuka pertanyaan dari <PEMBICARA>; gagasan selesai di detik 36; tidak butuh konteks sebelumnya.",
+      "hook": {"detik_klip": 0.0, "isi": "kalimat pembuka dari sumber (bukan kartu judul)"},
+      "akhir": "pikiran utuh / punchline",
+      "verifikasi_visual": {
+        "contact_sheet": "contact_m1.png",
+        "frame_bukti_s": [1236.0, 1250.0, 1268.0],
+        "cocok_dengan_transkrip": true,
+        "masalah_layar": []
+      },
+      "batas_beat": [12.0, 24.5],
+      "klip": "klip_1_<slug>"
+    },
+    {
+      "id": "m2",
+      "status": "tidak_ditemukan",
+      "diminta_user": true,
+      "catatan": "User meminta bagian tentang <topik>; tidak ada di sumber / ada di timestamp lain (sebut). Tidak dipalsukan."
+    },
+    {
+      "id": "m3",
+      "status": "ditolak",
+      "diminta_user": false,
+      "src_in": 2100.0,
+      "src_out": 2140.0,
+      "total": 4,
+      "alasan": "Gagasan tidak utuh; butuh konteks sebelumnya.",
+      "verifikasi_visual": {"masalah_layar": ["jendela aplikasi lain terlihat di pojok kanan"]}
+    }
+  ],
+  "laporan": {
+    "kuota_diminta": 3,
+    "klip_dihasilkan": 1,
+    "kurang_dari_kuota_karena": "hanya satu momen layak; sisanya lemah/tidak ditemukan"
+  }
+}

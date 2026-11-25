@@ -1,0 +1,191 @@
+{
+  "_catatan": "Skema 2 untuk scripts/render.py. Contoh = bentuk GR-1 (materi statis + VO + musik; parameter terukur dari build asli). Hapus kunci berawalan '_' bila mau. Semua waktu detik. Path = placeholder.",
+  "schema": 2,
+  "out": "final.mp4",
+  "work": "work",
+  "size": [
+    1080,
+    1920
+  ],
+  "_catatan_size": "Ukuran sah hanya [1080,1920] (portrait, default) atau [1920,1080] (landscape). Landscape hanya untuk K2 materi statis dari sumber landscape (tervalidasi n=1, F11) dan WAJIB cocok dengan `orientasi` di brief.json; qc_all memeriksa kecocokan ini bila diberi --project + --brief. Gaya kartu landscape terukur F11: size 46 / judul 54, wrap 42, y h-240 (judul h-260) — lihat references/K2-statis.md.",
+  "fps": 30,
+  "segments": [
+    {
+      "type": "still",
+      "src": "sumber/foto_hook.png",
+      "dur": 5.5,
+      "zoom": [
+        1.0,
+        1.08
+      ],
+      "focus": [
+        0.5,
+        0.3
+      ],
+      "_catatan": "still = gambar + zoom. Posisi mulai = akhir segmen sebelumnya dikurangi durasi transisi (di sini 0)."
+    },
+    {
+      "type": "clip",
+      "src": "sumber/video.mp4",
+      "src_in": 12.0,
+      "dur": 13.5,
+      "mode": "crop",
+      "crop": {
+        "x": {
+          "from": 1150,
+          "to": 1028
+        },
+        "y": 0,
+        "w": 482,
+        "h": 858
+      },
+      "transition_in": {
+        "type": "fade",
+        "dur": 0.5
+      },
+      "_catatan": "crop = piksel SUMBER; x/y/w/h angka tetap ATAU {from,to} (pan linear sepanjang segmen). w:h harus 9:16."
+    },
+    {
+      "type": "clip",
+      "src": "sumber/video.mp4",
+      "src_in": 40.0,
+      "dur": 8.5,
+      "mode": "fit",
+      "fit_h": 453,
+      "pad_color": "black",
+      "transition_in": {
+        "type": "fade",
+        "dur": 0.5
+      },
+      "_catatan": "fit = skala ke lebar 1080 (tinggi fit_h, default otomatis genap) + bar pad_color. Dipakai untuk kartu judul/CTA dari trailer."
+    },
+    {
+      "type": "freeze",
+      "src": "sumber/video.mp4",
+      "src_in": 55.2,
+      "dur": 1.2,
+      "mode": "crop",
+      "crop": {
+        "x": 1008,
+        "y": 0,
+        "w": 482,
+        "h": 858
+      },
+      "_catatan": "freeze = bekukan frame sumber di src_in (BUKAN tpad default). Boleh memakai crop/fit seperti clip."
+    },
+    {
+      "type": "clip",
+      "src": "sumber/video.mp4",
+      "src_in": 60.0,
+      "dur": 4.0,
+      "mode": "blurpad",
+      "_catatan": "mode: crop | cover | fit | blurpad. Antar segmen tanpa transition_in = potong keras (tepat di grid frame)."
+    },
+    {
+      "type": "color",
+      "color": "0x101010",
+      "dur": 1.0,
+      "_catatan": "segmen warna polos dari lavfi, TANPA berkas (v0.4; pengganti still black.png yang rapuh). Warna = nama ffmpeg atau 0xRRGGBB. Awas: hitam murni (black/0x000000) lolos ke qc_all sebagai frame_hitam = FAIL walau dideklarasikan; poster gelap yang berisi teks/logo = gelap-berkonten (wajib deklarasi, WARN)."
+    }
+  ],
+  "audio": {
+    "_catatan": "Audio TERPISAH dari video: tiap item punya src_in/at sendiri. role: source | vo | music | sfx. Tiap item di-pad ke durasi total (musik tak terpotong saat VO habis). VO narasi: suara kanonik Helio (Shortwave, avocado_v2:MAI_03) — perintah: /opt/hatch/bin/tts speak --language id --voice avocado_v2:MAI_03 --text-stdin --output vo/narasi.wav (voice default-nya sudah avocado_v2:MAI_03, jadi --voice boleh dihilangkan; lock #45). Suara dicatat di production.json blok vo (lihat templates/production.example.json); suara lain hanya lewat override lock #45. Isi VO wajib diverifikasi via whisper (sub_voice_check / whisper.cpp -l id).",
+    "items": [
+      {
+        "role": "vo",
+        "src": "vo/narasi1.wav",
+        "at": 0.3
+      },
+      {
+        "role": "vo",
+        "src": "vo/narasi2.wav",
+        "at": 10.0
+      },
+      {
+        "role": "vo",
+        "src": "vo/narasi3.wav",
+        "at": 18.5
+      },
+      {
+        "role": "music",
+        "src": "musik/bed.wav",
+        "loop": true,
+        "dur": 30.0,
+        "gain_db": -6.02
+      },
+      {
+        "role": "source",
+        "src": "sumber/video.mp4",
+        "src_in": 90.85,
+        "at": 0.0,
+        "dur": 3.2,
+        "gain_db": 0,
+        "_catatan": "contoh audio sumber dari offset BERBEDA dari videonya (src_in audio != src_in video)"
+      }
+    ],
+    "duck": {
+      "key": [
+        "vo"
+      ],
+      "target": [
+        "music"
+      ],
+      "threshold": 0.025,
+      "ratio": 6,
+      "attack": 80,
+      "release": 400,
+      "makeup": 1
+    },
+    "master": {
+      "fade_out": {
+        "start": 29,
+        "dur": 1
+      }
+    }
+  },
+  "cards": "cards.json",
+  "style": {
+    "font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    "size": 46,
+    "title_size": 54,
+    "color": "white",
+    "accent": "#FFD60A",
+    "border": 3,
+    "bordercolor": "black",
+    "box": true,
+    "boxcolor": "black@0.45",
+    "boxborderw": 20,
+    "y": "h-280",
+    "wrap": 28,
+    "line_spacing": 8,
+    "text_align": "center",
+    "_catatan": "Nilai = terukur dari build asli GR-2 (46 px, border 3, box black@0.45, boxborderw 20, y=h-280, DejaVuSans-Bold). GR-1: size 64 (kartu tertentu 56 lewat override size di cards.json), boxborderw 22. Override per kartu: size, y, lines, boxborderw. text_align butuh ffmpeg >= 6 [T VM]; 'none' bila tak ada. accent default #FFD60A (F6, caption ASS K3: kata kunci di cards.json `keywords` diwarnai aksen)."
+  },
+  "encode": {
+    "preset": "veryfast",
+    "vbitrate": "3200k",
+    "maxrate": "3800k",
+    "bufsize": "7600k",
+    "abitrate": "128k"
+  },
+  "loudness": {
+    "I": -18,
+    "TP": -3.5,
+    "TP_pass1": -3.0,
+    "LRA": 11
+  },
+  "qc_exceptions": [
+    {
+      "check": "digital_silence",
+      "from": 23.61,
+      "to": 24.4,
+      "reason": "ekor sunyi disengaja (CTA poster) — contoh; hapus bila tidak ada"
+    },
+    {
+      "check": "frame_hitam",
+      "from": 21.5,
+      "to": 24.37,
+      "reason": "poster CTA gelap berisi teks (YMAX tinggi) — contoh. Hanya berlaku untuk 'gelap-berkonten'; hitam MURNI tetap FAIL walau dideklarasikan"
+    }
+  ]
+}

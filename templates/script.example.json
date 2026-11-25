@@ -1,0 +1,57 @@
+{
+  "_catatan": "Masukan scripts/pause_anchor.py (--script). Teks kartu SELALU dari naskah. timing: prop (NARASI, otomatis, terbukti) | island, words (DIALOG, EKSPERIMENTAL: gagal pada dialog di atas musik, golden ronde 3 — hasil wajib dikoreksi manual + G-HUMAN; default dialog = cards.json manual, lihat cards.dialog.example.json). hold default 0 PER GRUP; noise default -50dB. Grup berdekatan: end dijepit ke start grup berikut - gap. Path = placeholder.",
+  "min_dur": 1.0,
+  "min_words": 2,
+  "max_words": 7,
+  "cuts": [],
+  "groups": [
+    {
+      "timing": "prop",
+      "span": [
+        0.3,
+        6.04
+      ],
+      "hold": 0.1,
+      "cards": [
+        "Cuan saat market merah:",
+        "Bitcoin turun dalam,",
+        "Suli malah cuan",
+        "hampir Rp 1 miliar",
+        "dari short Bitcoin."
+      ],
+      "size": 64
+    },
+    {
+      "timing": "prop",
+      "audio": "vo/narasi2.wav",
+      "offset": 10.0,
+      "cards": [
+        "frasa satu dua",
+        "frasa tiga empat lima"
+      ]
+    },
+    {
+      "timing": "island",
+      "audio": "sumber/trailer.mp4",
+      "src_in": 64.0,
+      "dur": 8.0,
+      "offset": 9.74,
+      "hold": 0.25,
+      "cards": [
+        "Orang-orang people pleaser",
+        "orang yang gak tau diri."
+      ],
+      "_eksperimental": true
+    },
+    {
+      "timing": "words",
+      "words": "work/words_trailer.json",
+      "offset": 20.0,
+      "cards": [
+        "kata naskah satu dua",
+        "kata naskah tiga empat"
+      ],
+      "_eksperimental": true
+    }
+  ]
+}
